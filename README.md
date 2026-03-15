@@ -1,50 +1,50 @@
 # ModelSweeper
 [![CI](https://github.com/Blackwolf9-coder/modelsweeper/actions/workflows/ci.yml/badge.svg)](https://github.com/Blackwolf9-coder/modelsweeper/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Issues](https://img.shields.io/github/issues/Blackwolf9-coder/modelsweeper)](https://github.com/Blackwolf9-coder/modelsweeper/issues)
+[![Release](https://img.shields.io/github/v/release/Blackwolf9-coder/modelsweeper)](https://github.com/Blackwolf9-coder/modelsweeper/releases)
 
 ![ModelSweeper Social Preview](docs/assets/social-preview.png)
 
-ModelSweeper is a desktop control center for AI model operations across local and cloud workflows.
-It helps you orchestrate role-based model presets, evaluate memory fit before execution, and synchronize settings into external clients from one unified interface.
+ModelSweeper is a desktop command center for AI model workflows.
+It helps you choose the right models, validate memory fit before runtime, and keep role-based presets synchronized across tools.
 
-## Quick Links
-- Landing Page: https://blackwolf9-coder.github.io/modelsweeper/
-- Latest Release: https://github.com/Blackwolf9-coder/modelsweeper/releases
+## Why ModelSweeper
+- Reduce trial-and-error before inference starts
+- Switch role presets quickly (`Thinker`, `Coder`, `Reviewer`)
+- Estimate RAM/VRAM fit with practical hardware inputs
+- Keep local and cloud-oriented workflows in one clean UI
+
+## Live Links
+- Website: [blackwolf9-coder.github.io/modelsweeper](https://blackwolf9-coder.github.io/modelsweeper/)
+- Releases: [github.com/Blackwolf9-coder/modelsweeper/releases](https://github.com/Blackwolf9-coder/modelsweeper/releases)
 - Launch Plan: [LAUNCH_PLAN.md](LAUNCH_PLAN.md)
-- Contributing Guide: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Campaign Kit: [CAMPAIGN_KIT.md](CAMPAIGN_KIT.md)
+- v0.2.0 Roadmap: [ROADMAP_v0.2.0.md](ROADMAP_v0.2.0.md)
 
-## Highlights
-- Role-based presets for `Thinker`, `Coder`, `Reviewer`, plus custom slots
-- One-click role assignment directly from the model catalog
-- Live memory feasibility checks based on current machine RAM
-- Hardware calculator for VRAM, system RAM, on-disk size, and GPU fit
-- Integration payload generation for toolchain consistency
-- Desktop-first UX with Electron + React
+## Core Features
+- Role-based presets with instant activation
+- Model catalog with one-click role assignment
+- Live system RAM tracking vs selected preset load
+- Hardware Calculator with slider-based controls:
+  - Model size (B params)
+  - Context length (tokens)
+  - System RAM (GB)
+  - VRAM per GPU (GB)
+- Integration settings export for external clients
 
 ## Product Areas
-- `Dashboard`: system memory health + active preset load signal
-- `Models`: search/sort/filter catalog + tools capability status + direct role assignment
-- `Preset Builder`: profile authoring with simultaneous or sequential execution mode
-- `Hardware Calculator`: practical capacity planning for real inference setups
-- `Integrations`: export/apply active preset context to connected tools
+- `Dashboard`: machine RAM state and preset load warnings
+- `Models`: manage installed models and assign operational roles
+- `Preset Builder`: compose simultaneous/sequential execution profiles
+- `Hardware Calculator`: estimate RAM, VRAM, and deployment fit
+- `Integrations`: map active preset settings to tool integrations
 
-## Tech Stack
+## Stack
 - Electron
 - React + TypeScript
 - Zustand
 - Vite
 - Tailwind CSS
-
-## Project Structure
-```text
-electron/            # Main process, preload bridge, IPC handlers
-src/
-  components/        # UI primitives and feature components
-  lib/               # Calculators, providers, and utility functions
-  pages/             # Route-level screens
-  store/             # Zustand state domains
-```
 
 ## Getting Started
 ### Requirements
@@ -56,7 +56,7 @@ src/
 npm install
 ```
 
-### Development
+### Run (Dev)
 ```bash
 npm run dev
 ```
@@ -67,7 +67,7 @@ npm run typecheck
 npm run lint
 ```
 
-### Production Build
+### Build
 ```bash
 npm run build
 ```
@@ -77,17 +77,11 @@ npm run build
 npm run dist
 ```
 
-## Roadmap
-- Provider adapters beyond local model endpoints
-- Team preset export/import and versioning
-- Better runtime benchmarking and latency estimates
-- Integration templates marketplace
-
 ## Contributing
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Security
-If you discover a vulnerability, follow [SECURITY.md](SECURITY.md).
+See [SECURITY.md](SECURITY.md).
 
 ## License
 MIT
