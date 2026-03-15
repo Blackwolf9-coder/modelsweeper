@@ -1,108 +1,85 @@
 # ModelSweeper
+[![CI](https://github.com/Blackwolf9-coder/modelsweeper/actions/workflows/ci.yml/badge.svg)](https://github.com/Blackwolf9-coder/modelsweeper/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Issues](https://img.shields.io/github/issues/Blackwolf9-coder/modelsweeper)](https://github.com/Blackwolf9-coder/modelsweeper/issues)
 
-ModelSweeper is a desktop control center for AI model workflows.  
-It helps teams and solo builders manage model presets, monitor memory feasibility, compare hardware requirements, and push configuration changes to external tools from one place.
+ModelSweeper is a desktop control center for AI model operations across local and cloud workflows.
+It helps you orchestrate role-based model presets, evaluate memory fit before execution, and synchronize settings into external clients from one unified interface.
 
-## Why ModelSweeper
+## Highlights
+- Role-based presets for `Thinker`, `Coder`, `Reviewer`, plus custom slots
+- One-click role assignment directly from the model catalog
+- Live memory feasibility checks based on current machine RAM
+- Hardware calculator for VRAM, system RAM, on-disk size, and GPU fit
+- Integration payload generation for toolchain consistency
+- Desktop-first UX with Electron + React
 
-Modern AI workflows usually involve multiple model roles, multiple tools, and constant hardware tradeoffs.  
-ModelSweeper provides a unified layer to:
-
-- Manage **role-based presets** (`thinker`, `coder`, `reviewer`, custom slots)
-- Evaluate **live RAM feasibility** before switching workloads
-- Explore local model inventory and tool capability status
-- Use a clean **Hardware Calculator** for VRAM / RAM planning
-- Apply generated config payloads to supported integrations
-
-## Core Features
-
-- **Dashboard**
-  - Live system memory snapshot
-  - Active preset load estimate
-  - Quick feasibility signal (safe / tight / exceeds)
-
-- **Models**
-  - Fetch local models via provider endpoint
-  - Search, sort, and filter by tool support
-  - Assign models directly to preset roles (Coder / Thinker / Reviewer)
-  - Convert eligible models to tools-capable variants
-
-- **Preset Builder**
-  - Build and edit workflow presets
-  - Switch between simultaneous vs sequential execution modes
-  - Add custom role slots
-
-- **Hardware Calculator**
-  - Estimate required VRAM
-  - Estimate on-disk model size
-  - Estimate minimum system RAM
-  - Compare discrete GPU vs unified memory fit
-
-- **Integrations**
-  - Generate/apply config payloads for supported clients
-  - Keep active preset context synchronized across tooling
+## Product Areas
+- `Dashboard`: system memory health + active preset load signal
+- `Models`: search/sort/filter catalog + tools capability status + direct role assignment
+- `Preset Builder`: profile authoring with simultaneous or sequential execution mode
+- `Hardware Calculator`: practical capacity planning for real inference setups
+- `Integrations`: export/apply active preset context to connected tools
 
 ## Tech Stack
-
 - Electron
 - React + TypeScript
-- Vite
 - Zustand
+- Vite
 - Tailwind CSS
 
 ## Project Structure
-
 ```text
-electron/            # Electron main/preload and system IPC
+electron/            # Main process, preload bridge, IPC handlers
 src/
-  components/        # Shared UI components
-  lib/               # Calculation and utility modules
-  pages/             # Route-level views (Dashboard, Models, etc.)
-  store/             # Zustand state stores
+  components/        # UI primitives and feature components
+  lib/               # Calculators, providers, and utility functions
+  pages/             # Route-level screens
+  store/             # Zustand state domains
 ```
 
 ## Getting Started
-
 ### Requirements
-
 - Node.js 18+
 - npm 9+
 
 ### Install
-
 ```bash
 npm install
 ```
 
-### Run in development
-
+### Development
 ```bash
 npm run dev
 ```
 
-### Type-check
-
+### Validate
 ```bash
 npm run typecheck
+npm run lint
 ```
 
-### Build
-
+### Production Build
 ```bash
 npm run build
 ```
 
-### Package desktop app
-
+### Package Desktop App
 ```bash
 npm run dist
 ```
 
-## Notes
+## Roadmap
+- Provider adapters beyond local model endpoints
+- Team preset export/import and versioning
+- Better runtime benchmarking and latency estimates
+- Integration templates marketplace
 
-- Calculations are estimation-oriented and intended for planning, not strict benchmarking.
-- Hardware results vary by runtime backend, quantization implementation, and batch behavior.
+## Contributing
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
+
+## Security
+If you discover a vulnerability, follow [SECURITY.md](SECURITY.md).
 
 ## License
-
 MIT
