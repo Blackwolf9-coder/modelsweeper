@@ -18,7 +18,9 @@ It helps you choose the right models, validate memory fit before runtime, and ke
 - Website: [blackwolf9-coder.github.io/modelsweeper](https://blackwolf9-coder.github.io/modelsweeper/)
 - Releases: [github.com/Blackwolf9-coder/modelsweeper/releases](https://github.com/Blackwolf9-coder/modelsweeper/releases)
 - Launch Plan: [LAUNCH_PLAN.md](LAUNCH_PLAN.md)
-- Campaign Kit: [CAMPAIGN_KIT.md](CAMPAIGN_KIT.md)
+- Campaign Kit (EN): [CAMPAIGN_KIT.md](CAMPAIGN_KIT.md)
+- Campaign Kit (AR): [CAMPAIGN_KIT_AR.md](CAMPAIGN_KIT_AR.md)
+- Product Hunt Pack: [PRODUCT_HUNT_READY.md](PRODUCT_HUNT_READY.md)
 - v0.2.0 Roadmap: [ROADMAP_v0.2.0.md](ROADMAP_v0.2.0.md)
 
 ## Core Features
