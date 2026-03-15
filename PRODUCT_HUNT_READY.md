@@ -51,6 +51,7 @@ A: v0.2.0 focuses on reviewer parity, improved live memory accuracy, and a simpl
 ## Assets Checklist
 - Logo: `docs/assets/modelsweeper-logo.png`
 - Social Preview: `docs/assets/social-preview.png`
+- UI Screenshot: `docs/assets/modelsweeper-ui-preview.png`
 - Landing Page: https://blackwolf9-coder.github.io/modelsweeper/
 - Repo: https://github.com/Blackwolf9-coder/modelsweeper
 - Release: https://github.com/Blackwolf9-coder/modelsweeper/releases/tag/v0.1.0

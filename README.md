@@ -5,6 +5,9 @@
 
 ![ModelSweeper Social Preview](docs/assets/social-preview.png)
 
+## Interface Preview
+![ModelSweeper App Interface](docs/assets/modelsweeper-ui-preview.png)
+
 ModelSweeper is a desktop command center for AI model workflows.
 It helps you choose the right models, validate memory fit before runtime, and keep role-based presets synchronized across tools.
 
