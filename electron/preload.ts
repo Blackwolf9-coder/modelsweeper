@@ -38,6 +38,18 @@ interface IntegrationEntry {
 }
 
 type IntegrationsState = Record<IntegrationAppName, IntegrationEntry>;
+type UpdateState = 'idle' | 'checking' | 'available' | 'up-to-date' | 'unsupported' | 'error';
+
+interface UpdateStatus {
+  state: UpdateState;
+  currentVersion: string;
+  latestVersion?: string;
+  releaseName?: string;
+  releaseNotes?: string;
+  releaseDate?: string;
+  checkedAt?: string;
+  error?: string;
+}
 
 const api = {
   getSystemRam: () => ipcRenderer.invoke('get-system-ram') as Promise<{ total: number; free: number; used: number }>,
@@ -87,6 +99,20 @@ const api = {
     }>,
 
   pickDirectory: () => ipcRenderer.invoke('pick-directory') as Promise<string | null>,
+  getUpdateStatus: () => ipcRenderer.invoke('get-update-status') as Promise<UpdateStatus>,
+  checkForUpdates: () => ipcRenderer.invoke('check-for-updates') as Promise<UpdateStatus>,
+  openReleasePage: () => ipcRenderer.invoke('open-release-page') as Promise<{ ok: boolean; url: string }>,
+  onUpdateStatus: (listener: (status: UpdateStatus) => void) => {
+    const wrapped = (_event: Electron.IpcRendererEvent, status: UpdateStatus) => {
+      listener(status);
+    };
+
+    ipcRenderer.on('update-status', wrapped);
+
+    return () => {
+      ipcRenderer.removeListener('update-status', wrapped);
+    };
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

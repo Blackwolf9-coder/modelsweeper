@@ -3,6 +3,7 @@ export type MultiModelMode = 'simultaneous' | 'sequential';
 export type PresetRole = 'thinker' | 'coder' | 'reviewer';
 export type SortOption = 'name' | 'size' | 'date';
 export type IntegrationAppName = 'opencode' | 'claude' | 'cursor' | 'custom';
+export type UpdateState = 'idle' | 'checking' | 'available' | 'up-to-date' | 'unsupported' | 'error';
 
 export interface SystemRamSnapshot {
   total: number;
@@ -67,4 +68,15 @@ export interface RamEstimation {
   totalRuntimeGb: number;
   usagePercentOfTotal: number;
   usagePercentOfAvailable: number;
+}
+
+export interface UpdateStatus {
+  state: UpdateState;
+  currentVersion: string;
+  latestVersion?: string;
+  releaseName?: string;
+  releaseNotes?: string;
+  releaseDate?: string;
+  checkedAt?: string;
+  error?: string;
 }

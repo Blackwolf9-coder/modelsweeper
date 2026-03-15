@@ -5,6 +5,7 @@ import type {
   IntegrationsState,
   IntegrationEntry,
   SystemRamSnapshot,
+  UpdateStatus,
 } from '@/types';
 
 interface SystemState {
@@ -12,6 +13,7 @@ interface SystemState {
   settings: AppSettings;
   integrations: IntegrationsState;
   integrationPaths: Record<IntegrationAppName, string>;
+  updateStatus: UpdateStatus;
   isBootstrapped: boolean;
   refreshSystemRam: () => Promise<void>;
   loadSettings: () => Promise<void>;
@@ -20,6 +22,11 @@ interface SystemState {
   saveIntegrations: () => Promise<void>;
   updateIntegration: (appName: IntegrationAppName, patch: Partial<IntegrationEntry>) => void;
   pickDirectory: () => Promise<string | null>;
+  loadUpdateStatus: () => Promise<void>;
+  checkForUpdates: () => Promise<void>;
+  openReleasePage: () => Promise<void>;
+  subscribeToUpdateEvents: () => void;
+  unsubscribeFromUpdateEvents: () => void;
 }
 
 const defaultSettings: AppSettings = {
@@ -41,6 +48,10 @@ const emptyRam: SystemRamSnapshot = {
   free: 0,
   used: 0,
 };
+const defaultUpdateStatus: UpdateStatus = {
+  state: 'idle',
+  currentVersion: '0.0.0',
+};
 
 const defaultPaths: Record<IntegrationAppName, string> = {
   opencode: '',
@@ -49,11 +60,14 @@ const defaultPaths: Record<IntegrationAppName, string> = {
   custom: '',
 };
 
+let removeUpdateListener: (() => void) | null = null;
+
 export const useSystemStore = create<SystemState>((set, get) => ({
   systemRam: emptyRam,
   settings: defaultSettings,
   integrations: defaultIntegrations,
   integrationPaths: defaultPaths,
+  updateStatus: defaultUpdateStatus,
   isBootstrapped: false,
 
   refreshSystemRam: async () => {
@@ -138,5 +152,58 @@ export const useSystemStore = create<SystemState>((set, get) => ({
     }
 
     return api.pickDirectory();
+  },
+
+  loadUpdateStatus: async () => {
+    const api = window.electronAPI;
+
+    if (!api) {
+      return;
+    }
+
+    const updateStatus = await api.getUpdateStatus();
+    set({ updateStatus });
+  },
+
+  checkForUpdates: async () => {
+    const api = window.electronAPI;
+
+    if (!api) {
+      return;
+    }
+
+    const updateStatus = await api.checkForUpdates();
+    set({ updateStatus });
+  },
+
+  openReleasePage: async () => {
+    const api = window.electronAPI;
+
+    if (!api) {
+      return;
+    }
+
+    await api.openReleasePage();
+  },
+
+  subscribeToUpdateEvents: () => {
+    const api = window.electronAPI;
+
+    if (!api || removeUpdateListener) {
+      return;
+    }
+
+    removeUpdateListener = api.onUpdateStatus((updateStatus) => {
+      set({ updateStatus });
+    });
+  },
+
+  unsubscribeFromUpdateEvents: () => {
+    if (!removeUpdateListener) {
+      return;
+    }
+
+    removeUpdateListener();
+    removeUpdateListener = null;
   },
 }));

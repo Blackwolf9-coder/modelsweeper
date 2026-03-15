@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
+import { UpdateNotice } from '@/components/UpdateNotice';
 import { DashboardPage } from '@/pages/Dashboard';
 import { IntegrationsPage } from '@/pages/Integrations';
 import { ModelsPage } from '@/pages/Models';
@@ -28,20 +29,40 @@ const App = () => {
   const settings = useSystemStore((state) => state.settings);
   const refreshSystemRam = useSystemStore((state) => state.refreshSystemRam);
   const loadIntegrations = useSystemStore((state) => state.loadIntegrations);
+  const loadUpdateStatus = useSystemStore((state) => state.loadUpdateStatus);
+  const checkForUpdates = useSystemStore((state) => state.checkForUpdates);
+  const subscribeToUpdateEvents = useSystemStore((state) => state.subscribeToUpdateEvents);
+  const unsubscribeFromUpdateEvents = useSystemStore((state) => state.unsubscribeFromUpdateEvents);
 
   const loadPresets = usePresetsStore((state) => state.loadPresets);
   const fetchModels = useModelsStore((state) => state.fetchModels);
 
   useEffect(() => {
     const boot = async () => {
+      subscribeToUpdateEvents();
       await loadSettings();
       await loadPresets();
       await loadIntegrations();
       await refreshSystemRam();
+      await loadUpdateStatus();
+      await checkForUpdates();
     };
 
     void boot();
-  }, [loadIntegrations, loadPresets, loadSettings, refreshSystemRam]);
+
+    return () => {
+      unsubscribeFromUpdateEvents();
+    };
+  }, [
+    checkForUpdates,
+    loadIntegrations,
+    loadPresets,
+    loadSettings,
+    loadUpdateStatus,
+    refreshSystemRam,
+    subscribeToUpdateEvents,
+    unsubscribeFromUpdateEvents,
+  ]);
 
   useEffect(() => {
     if (!settings.ollamaBaseUrl) {
@@ -70,6 +91,7 @@ const App = () => {
 
         <main className="relative flex-1 overflow-auto p-6">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_0%_0%,rgba(59,130,246,0.14),transparent_40%),radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.12),transparent_35%),linear-gradient(180deg,#0b0b11,#090a0f)]" />
+          <UpdateNotice />
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/models" element={<ModelsPage />} />

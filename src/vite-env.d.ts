@@ -6,6 +6,7 @@ import type {
   IntegrationsState,
   Preset,
   SystemRamSnapshot,
+  UpdateStatus,
 } from './types';
 
 declare global {
@@ -53,6 +54,10 @@ declare global {
         backupDirectory?: string;
       }) => Promise<{ ok: boolean; path: string; restoredFrom: string }>;
       pickDirectory: () => Promise<string | null>;
+      getUpdateStatus: () => Promise<UpdateStatus>;
+      checkForUpdates: () => Promise<UpdateStatus>;
+      openReleasePage: () => Promise<{ ok: boolean; url: string }>;
+      onUpdateStatus: (listener: (status: UpdateStatus) => void) => () => void;
     };
   }
 }

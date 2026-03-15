@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme, shell } from 'electron';
 import Store from 'electron-store';
+import { autoUpdater, type UpdateInfo } from 'electron-updater';
 import {
   IntegrationAppName,
   readConfigFile,
@@ -55,8 +56,27 @@ interface StoreSchema {
   integrations: IntegrationsState;
 }
 
+type UpdateState = 'idle' | 'checking' | 'available' | 'up-to-date' | 'unsupported' | 'error';
+
+interface UpdateStatus {
+  state: UpdateState;
+  currentVersion: string;
+  latestVersion?: string;
+  releaseName?: string;
+  releaseNotes?: string;
+  releaseDate?: string;
+  checkedAt?: string;
+  error?: string;
+}
+
 let mainWindow: BrowserWindow | null = null;
 let store: Store<StoreSchema> | null = null;
+let updateStatus: UpdateStatus = {
+  state: 'idle',
+  currentVersion: app.getVersion(),
+};
+
+const releasePageUrl = 'https://github.com/Blackwolf9-coder/modelsweeper/releases/latest';
 
 const createId = (label: string): string =>
   label
@@ -171,6 +191,96 @@ const applyThemePreference = (theme: ThemePreference): void => {
   nativeTheme.themeSource = theme;
 };
 
+const toReleaseNotesText = (notes: UpdateInfo['releaseNotes']): string | undefined => {
+  if (!notes) {
+    return undefined;
+  }
+
+  if (typeof notes === 'string') {
+    return notes;
+  }
+
+  return notes
+    .map((item) => item.note)
+    .filter((note): note is string => Boolean(note))
+    .join('\n\n');
+};
+
+const broadcastUpdateStatus = (): void => {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    return;
+  }
+
+  mainWindow.webContents.send('update-status', updateStatus);
+};
+
+const setUpdateStatus = (next: UpdateStatus): void => {
+  updateStatus = next;
+  broadcastUpdateStatus();
+};
+
+const setupAutoUpdater = (): void => {
+  if (!app.isPackaged) {
+    setUpdateStatus({
+      state: 'unsupported',
+      currentVersion: app.getVersion(),
+      checkedAt: new Date().toISOString(),
+      error: 'Update checks are available only in packaged builds.',
+    });
+    return;
+  }
+
+  autoUpdater.autoDownload = false;
+  autoUpdater.autoInstallOnAppQuit = false;
+
+  autoUpdater.on('checking-for-update', () => {
+    setUpdateStatus({
+      state: 'checking',
+      currentVersion: app.getVersion(),
+      checkedAt: new Date().toISOString(),
+    });
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    setUpdateStatus({
+      state: 'available',
+      currentVersion: app.getVersion(),
+      latestVersion: info.version,
+      releaseName: info.releaseName ?? undefined,
+      releaseNotes: toReleaseNotesText(info.releaseNotes),
+      releaseDate: info.releaseDate,
+      checkedAt: new Date().toISOString(),
+    });
+  });
+
+  autoUpdater.on('update-not-available', (info) => {
+    setUpdateStatus({
+      state: 'up-to-date',
+      currentVersion: app.getVersion(),
+      latestVersion: info.version ?? app.getVersion(),
+      checkedAt: new Date().toISOString(),
+    });
+  });
+
+  autoUpdater.on('error', (error) => {
+    setUpdateStatus({
+      state: 'error',
+      currentVersion: app.getVersion(),
+      checkedAt: new Date().toISOString(),
+      error: error?.message ?? 'Unknown update error',
+    });
+  });
+
+  void autoUpdater.checkForUpdates().catch((error: Error) => {
+    setUpdateStatus({
+      state: 'error',
+      currentVersion: app.getVersion(),
+      checkedAt: new Date().toISOString(),
+      error: error.message,
+    });
+  });
+};
+
 const buildWindow = (): void => {
   mainWindow = new BrowserWindow({
     width: 1280,
@@ -189,6 +299,9 @@ const buildWindow = (): void => {
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url).catch(() => null);
     return { action: 'deny' };
+  });
+  mainWindow.webContents.on('did-finish-load', () => {
+    broadcastUpdateStatus();
   });
 
   const devServerUrl = process.env.VITE_DEV_SERVER_URL;
@@ -333,6 +446,37 @@ const setupIpc = (): void => {
 
     return response.filePaths[0];
   });
+
+  ipcMain.handle('get-update-status', async () => updateStatus);
+
+  ipcMain.handle('check-for-updates', async () => {
+    if (!app.isPackaged) {
+      return updateStatus;
+    }
+
+    try {
+      await autoUpdater.checkForUpdates();
+    } catch (error) {
+      const err = error as Error;
+
+      setUpdateStatus({
+        state: 'error',
+        currentVersion: app.getVersion(),
+        checkedAt: new Date().toISOString(),
+        error: err.message,
+      });
+    }
+
+    return updateStatus;
+  });
+
+  ipcMain.handle('open-release-page', async () => {
+    await shell.openExternal(releasePageUrl);
+    return {
+      ok: true,
+      url: releasePageUrl,
+    };
+  });
 };
 
 const bootstrap = async (): Promise<void> => {
@@ -358,6 +502,7 @@ const bootstrap = async (): Promise<void> => {
 
   setupIpc();
   buildWindow();
+  setupAutoUpdater();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

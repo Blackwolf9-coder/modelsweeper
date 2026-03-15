@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FolderSearch } from 'lucide-react';
+import { ExternalLink, FolderSearch, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,9 @@ export const SettingsPage = () => {
   const settings = useSystemStore((state) => state.settings);
   const saveSettings = useSystemStore((state) => state.saveSettings);
   const pickDirectory = useSystemStore((state) => state.pickDirectory);
+  const updateStatus = useSystemStore((state) => state.updateStatus);
+  const checkForUpdates = useSystemStore((state) => state.checkForUpdates);
+  const openReleasePage = useSystemStore((state) => state.openReleasePage);
 
   const [form, setForm] = useState<AppSettings>(settings);
   const [savedLabel, setSavedLabel] = useState('');
@@ -96,6 +99,42 @@ export const SettingsPage = () => {
               Save Settings
             </Button>
             {savedLabel ? <span className="text-xs text-muted-foreground">{savedLabel}</span> : null}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>App Updates</CardTitle>
+          <CardDescription>Check for new releases and update from GitHub.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="rounded-lg border border-border/60 bg-background/35 p-3 text-sm">
+            <p className="font-medium">Current: v{updateStatus.currentVersion}</p>
+            <p className="text-xs text-muted-foreground">
+              {updateStatus.state === 'available'
+                ? `New version available: v${updateStatus.latestVersion ?? 'latest'}`
+                : updateStatus.state === 'checking'
+                  ? 'Checking for updates...'
+                  : updateStatus.state === 'up-to-date'
+                    ? 'You are using the latest version.'
+                    : updateStatus.state === 'unsupported'
+                      ? 'Update checks work in packaged app builds.'
+                      : updateStatus.state === 'error'
+                        ? `Update check failed: ${updateStatus.error ?? 'Unknown error'}`
+                        : 'No update check yet.'}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={() => void checkForUpdates()}>
+              <RefreshCw className="mr-1 h-4 w-4" />
+              Check for Updates
+            </Button>
+            <Button onClick={() => void openReleasePage()}>
+              <ExternalLink className="mr-1 h-4 w-4" />
+              Open Releases
+            </Button>
           </div>
         </CardContent>
       </Card>
