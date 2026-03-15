@@ -1,0 +1,52 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="1180" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1220"/>
+      <stop offset="0.55" stop-color="#0D1728"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <radialGradient id="blobA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(216 112) rotate(24) scale(420 260)">
+      <stop stop-color="#22C55E" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#22C55E" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1060 540) rotate(-18) scale(440 260)">
+      <stop stop-color="#F59E0B" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="560" y1="146" x2="1188" y2="146" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34D399"/>
+      <stop offset="1" stop-color="#FBBF24"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="640" rx="32" fill="url(#bg)"/>
+  <rect width="1280" height="640" rx="32" fill="url(#blobA)"/>
+  <rect width="1280" height="640" rx="32" fill="url(#blobB)"/>
+
+  <g transform="translate(88 150)">
+    <rect x="0" y="0" width="220" height="220" rx="56" fill="#0E1116"/>
+    <rect x="10" y="10" width="200" height="200" rx="50" fill="#1A2435"/>
+    <path d="M45 165V56H74L109 117L145 56H174V165H145V106L118 151H100L74 106V165H45Z" fill="#F8FAFC"/>
+    <path d="M32 148C51 171 80 184 111 184C143 184 172 171 188 148" stroke="#F8FAFC" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <text x="360" y="188" fill="#E5E7EB" font-family="Space Grotesk, Sora, Arial, sans-serif" font-size="66" font-weight="700">
+    ModelSweeper
+  </text>
+  <rect x="360" y="208" width="700" height="4" rx="2" fill="url(#line)"/>
+
+  <text x="360" y="268" fill="#CBD5E1" font-family="Manrope, Sora, Arial, sans-serif" font-size="32" font-weight="500">
+    AI model operations, presets, and hardware planning in one desktop workflow
+  </text>
+
+  <g fill="#94A3B8" font-family="Manrope, Arial, sans-serif" font-size="26">
+    <text x="360" y="344">- Role-based model presets (Thinker / Coder / Reviewer)</text>
+    <text x="360" y="390">- Live memory feasibility and hardware calculator</text>
+    <text x="360" y="436">- Integration sync layer for consistent model configuration</text>
+  </g>
+
+  <rect x="360" y="484" width="432" height="74" rx="16" fill="#0B1220" stroke="#334155"/>
+  <text x="390" y="532" fill="#22C55E" font-family="Space Grotesk, Arial, sans-serif" font-size="28" font-weight="700">
+    github.com/Blackwolf9-coder/modelsweeper
+  </text>
+</svg>

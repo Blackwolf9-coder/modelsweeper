@@ -3,8 +3,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/Blackwolf9-coder/modelsweeper)](https://github.com/Blackwolf9-coder/modelsweeper/issues)
 
+![ModelSweeper Social Preview](docs/assets/social-preview.png)
+
 ModelSweeper is a desktop control center for AI model operations across local and cloud workflows.
 It helps you orchestrate role-based model presets, evaluate memory fit before execution, and synchronize settings into external clients from one unified interface.
+
+## Quick Links
+- Landing Page: https://blackwolf9-coder.github.io/modelsweeper/
+- Latest Release: https://github.com/Blackwolf9-coder/modelsweeper/releases
+- Launch Plan: [LAUNCH_PLAN.md](LAUNCH_PLAN.md)
+- Contributing Guide: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Highlights
 - Role-based presets for `Thinker`, `Coder`, `Reviewer`, plus custom slots
